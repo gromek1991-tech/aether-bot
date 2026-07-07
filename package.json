@@ -1,0 +1,22 @@
+{
+  "name": "aether-bot",
+  "version": "1.0.0",
+  "description": "AETHER - AI Cryptocurrency Telegram Mining Bot",
+  "type": "module",
+  "main": "bot.js",
+  "scripts": {
+    "start": "./start.sh",
+    "stop": "./stop.sh",
+    "status": "./status.sh",
+    "bot": "node bot.js",
+    "dashboard": "node dashboard.js",
+    "dev": "node --watch bot.js"
+  },
+  "keywords": ["telegram", "bot", "ai", "crypto", "mining", "aether", "ton"],
+  "author": "AETHER Team",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.0",
+    "node-telegram-bot-api": "^0.64.0"
+  }
+}

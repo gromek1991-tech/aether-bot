@@ -1,0 +1,83 @@
+{
+  "welcome": "🌟 ¡Bienvenido a AETHER!",
+  "subtitle": "Minando el Futuro de la IA",
+  "help": {
+    "title": "📊 Comandos:",
+    "mine": "/mine - Iniciar minería",
+    "claim": "/claim - Recoger recompensas",
+    "balance": "/balance - Verificar saldo",
+    "status": "/status - Estado de minería",
+    "boost": "/boost - Tienda de boosters",
+    "tasks": "/tasks - Tareas IA",
+    "ai": "/ai <texto> - Chat con IA",
+    "referral": "/referral - Sistema de referidos",
+    "leaderboard": "/leaderboard - Clasificación",
+    "clan": "/clan - Clan",
+    "wallet": "/wallet - Monedero",
+    "language": "/language - Cambiar idioma"
+  },
+  "mining": {
+    "started": "⛏️ ¡Minería iniciada!",
+    "speed": "Velocidad",
+    "time": "Tiempo",
+    "claim_success": "✅ ¡Minería completada!",
+    "earned": "Ganado",
+    "balance": "Saldo",
+    "cooldown": "⏳ Próxima minería en",
+    "already_mining": "¡Ya estás minando!",
+    "no_active": "❌ No hay minería activa"
+  },
+  "balance": {
+    "title": "💰 Tu Saldo:",
+    "total_mined": "Minado",
+    "speed": "Velocidad",
+    "rank": "Rango"
+  },
+  "boost": {
+    "title": "🛒 Tienda de Boosters:",
+    "price": "Precio",
+    "bought": "✅ ¡Comprado!",
+    "not_enough": "¡❌ Saldo insuficiente!"
+  },
+  "tasks": {
+    "title": "🤖 Tareas IA:",
+    "daily_limit": "Límite diario",
+    "translate": "📝 Traducción",
+    "summarize": "📋 Resumen",
+    "analyze": "🔍 Análisis",
+    "generate": "✨ Generar",
+    "completed": "✅ ¡Tarea completada!",
+    "reward": "Recompensa"
+  },
+  "referral": {
+    "title": "👥 Sistema de Referidos:",
+    "your_code": "Tu código",
+    "link": "Enlace de referido",
+    "referred": "Usuarios referidos",
+    "bonus": "Ganado"
+  },
+  "clan": {
+    "title": "🏴 Clan:",
+    "leader": "Líder",
+    "members": "Miembros",
+    "mined": "Minado",
+    "created": "✅ ¡Clan creado!",
+    "joined": "🎉 ¡Te uniste!",
+    "left": "👋 Saliste del clan"
+  },
+  "leaderboard": {
+    "title": "📊 Clasificación:",
+    "mining": "Líderes de Minería",
+    "balance": "Líderes de Saldo"
+  },
+  "language": {
+    "title": "🌍 Elige idioma:",
+    "selected": "✅ Idioma cambiado a:"
+  },
+  "errors": {
+    "token_missing": "❌ Token de Telegram faltante",
+    "invalid_input": "❌ Entrada inválida",
+    "rate_limit": "❌ Demasiadas solicitudes, espera",
+    "ai_error": "❌ Error de IA"
+  }
+}

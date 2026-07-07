@@ -1,0 +1,83 @@
+{
+  "welcome": "🌟 Willkommen bei AETHER!",
+  "subtitle": "Mine die Zukunft der KI",
+  "help": {
+    "title": "📊 Befehle:",
+    "mine": "/mine - Mining starten",
+    "claim": "/claim - Belohnungen sammeln",
+    "balance": "/balance - Guthaben prüfen",
+    "status": "/status - Mining-Status",
+    "boost": "/boost - Booster-Shop",
+    "tasks": "/tasks - KI-Aufgaben",
+    "ai": "/ai <text> - Mit KI chatten",
+    "referral": "/referral - Empfehlungssystem",
+    "leaderboard": "/leaderboard - Rangliste",
+    "clan": "/clan - Clan",
+    "wallet": "/wallet - Wallet",
+    "language": "/language - Sprache ändern"
+  },
+  "mining": {
+    "started": "⛏️ Mining gestartet!",
+    "speed": "Geschwindigkeit",
+    "time": "Zeit",
+    "claim_success": "✅ Mining abgeschlossen!",
+    "earned": "Verdient",
+    "balance": "Guthaben",
+    "cooldown": "⏳ Nächstes Mining in",
+    "already_mining": "Bereits am Minen!",
+    "no_active": "❌ Keine aktive Mining-Sitzung"
+  },
+  "balance": {
+    "title": "💰 Dein Guthaben:",
+    "total_mined": "Geminet",
+    "speed": "Geschwindigkeit",
+    "rank": "Rang"
+  },
+  "boost": {
+    "title": "🛒 Booster-Shop:",
+    "price": "Preis",
+    "bought": "✅ Gekauft!",
+    "not_enough": "❌ Unzureichendes Guthaben!"
+  },
+  "tasks": {
+    "title": "🤖 KI-Aufgaben:",
+    "daily_limit": "Tageslimit",
+    "translate": "📝 Übersetzung",
+    "summarize": "📋 Zusammenfassung",
+    "analyze": "🔍 Analyse",
+    "generate": "✨ Generieren",
+    "completed": "✅ Aufgabe abgeschlossen!",
+    "reward": "Belohnung"
+  },
+  "referral": {
+    "title": "👥 Empfehlungssystem:",
+    "your_code": "Dein Code",
+    "link": "Empfehlungslink",
+    "referred": "Empfohlene Nutzer",
+    "bonus": "Verdient"
+  },
+  "clan": {
+    "title": "🏴 Clan:",
+    "leader": "Anführer",
+    "members": "Mitglieder",
+    "mined": "Geminet",
+    "created": "✅ Clan erstellt!",
+    "joined": "🎉 Du bist beigetreten!",
+    "left": "👋 Du hast den Clan verlassen"
+  },
+  "leaderboard": {
+    "title": "📊 Rangliste:",
+    "mining": "Mining-Führer",
+    "balance": "Guthaben-Führer"
+  },
+  "language": {
+    "title": "🌍 Sprache wählen:",
+    "selected": "✅ Sprache geändert zu:"
+  },
+  "errors": {
+    "token_missing": "❌ Telegram-Token fehlt",
+    "invalid_input": "❌ Ungültige Eingabe",
+    "rate_limit": "❌ Zu viele Anfragen, warte",
+    "ai_error": "❌ KI-Fehler"
+  }
+}

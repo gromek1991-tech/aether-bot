@@ -1,0 +1,83 @@
+{
+  "welcome": "🌟 Welcome to AETHER!",
+  "subtitle": "Mine the Future of AI",
+  "help": {
+    "title": "📊 Commands:",
+    "mine": "/mine - Start mining",
+    "claim": "/claim - Collect rewards",
+    "balance": "/balance - Check balance",
+    "status": "/status - Mining status",
+    "boost": "/boost - Booster shop",
+    "tasks": "/tasks - AI Tasks",
+    "ai": "/ai <text> - Chat with AI",
+    "referral": "/referral - Referral system",
+    "leaderboard": "/leaderboard - Rankings",
+    "clan": "/clan - Clan",
+    "wallet": "/wallet - Wallet",
+    "language": "/language - Change language"
+  },
+  "mining": {
+    "started": "⛏️ Mining started!",
+    "speed": "Speed",
+    "time": "Time",
+    "claim_success": "✅ Mining complete!",
+    "earned": "Earned",
+    "balance": "Balance",
+    "cooldown": "⏳ Next mining in",
+    "already_mining": "Already mining!",
+    "no_active": "❌ No active mining session"
+  },
+  "balance": {
+    "title": "💰 Your Balance:",
+    "total_mined": "Mined",
+    "speed": "Speed",
+    "rank": "Rank"
+  },
+  "boost": {
+    "title": "🛒 Booster Shop:",
+    "price": "Price",
+    "bought": "✅ Purchased!",
+    "not_enough": "❌ Insufficient balance!"
+  },
+  "tasks": {
+    "title": "🤖 AI Tasks:",
+    "daily_limit": "Daily limit",
+    "translate": "📝 Translation",
+    "summarize": "📋 Summarize",
+    "analyze": "🔍 Analysis",
+    "generate": "✨ Generate",
+    "completed": "✅ Task completed!",
+    "reward": "Reward"
+  },
+  "referral": {
+    "title": "👥 Referral System:",
+    "your_code": "Your code",
+    "link": "Referral link",
+    "referred": "Referred users",
+    "bonus": "Earned"
+  },
+  "clan": {
+    "title": "🏴 Clan:",
+    "leader": "Leader",
+    "members": "Members",
+    "mined": "Mined",
+    "created": "✅ Clan created!",
+    "joined": "🎉 You joined!",
+    "left": "👋 You left the clan"
+  },
+  "leaderboard": {
+    "title": "📊 Leaderboard:",
+    "mining": "Mining Leaders",
+    "balance": "Balance Leaders"
+  },
+  "language": {
+    "title": "🌍 Choose language:",
+    "selected": "✅ Language changed to:"
+  },
+  "errors": {
+    "token_missing": "❌ Telegram token missing",
+    "invalid_input": "❌ Invalid input",
+    "rate_limit": "❌ Too many requests, wait",
+    "ai_error": "❌ AI error"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "welcome": "🌟 Добро пожаловать в AETHER!",
+  "subtitle": "Копай Будущее AI",
+  "help": {
+    "title": "📊 Команды:",
+    "mine": "/mine - Начать майнинг",
+    "claim": "/claim - Собрать награды",
+    "balance": "/balance - Проверить баланс",
+    "status": "/status - Статус майнинга",
+    "boost": "/boost - Магазин бустеров",
+    "tasks": "/tasks - Задания AI",
+    "ai": "/ai <текст> - Чат с AI",
+    "referral": "/referral - Реферальная система",
+    "leaderboard": "/leaderboard - Рейтинг",
+    "clan": "/clan - Клан",
+    "wallet": "/wallet - Кошелек",
+    "language": "/language - Изменить язык"
+  },
+  "mining": {
+    "started": "⛏️ Майнинг начат!",
+    "speed": "Скорость",
+    "time": "Время",
+    "claim_success": "✅ Майнинг завершен!",
+    "earned": "Заработано",
+    "balance": "Баланс",
+    "cooldown": "⏳ Следующий майнинг через",
+    "already_mining": "Уже майните!",
+    "no_active": "❌ Нет активного майнинга"
+  },
+  "balance": {
+    "title": "💰 Ваш Баланс:",
+    "total_mined": "Добыто",
+    "speed": "Скорость",
+    "rank": "Рейтинг"
+  },
+  "boost": {
+    "title": "🛒 Магазин Бустеров:",
+    "price": "Цена",
+    "bought": "✅ Куплено!",
+    "not_enough": "❌ Недостаточно средств!"
+  },
+  "tasks": {
+    "title": "🤖 Задания AI:",
+    "daily_limit": "Дневной лимит",
+    "translate": "📝 Перевод",
+    "summarize": "📋 Резюме",
+    "analyze": "🔍 Анализ",
+    "generate": "✨ Генерация",
+    "completed": "✅ Задание выполнено!",
+    "reward": "Награда"
+  },
+  "referral": {
+    "title": "👥 Реферальная Система:",
+    "your_code": "Ваш код",
+    "link": "Реферальная ссылка",
+    "referred": "Приглашенные",
+    "bonus": "Заработано"
+  },
+  "clan": {
+    "title": "🏴 Клан:",
+    "leader": "Лидер",
+    "members": "Участники",
+    "mined": "Добыто",
+    "created": "✅ Клан создан!",
+    "joined": "🎉 Вы вступили!",
+    "left": "👋 Вы покинули клан"
+  },
+  "leaderboard": {
+    "title": "📊 Рейтинг:",
+    "mining": "Лидеры Майнинга",
+    "balance": "Лидеры по Балансу"
+  },
+  "language": {
+    "title": "🌍 Выберите язык:",
+    "selected": "✅ Язык изменен на:"
+  },
+  "errors": {
+    "token_missing": "❌ Отсутствует токен Telegram",
+    "invalid_input": "❌ Неверные данные",
+    "rate_limit": "❌ Слишком много запросов, подождите",
+    "ai_error": "❌ Ошибка AI"
+  }
+}

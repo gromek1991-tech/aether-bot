@@ -1,0 +1,83 @@
+{
+  "welcome": "🌟 Witaj w AETHER!",
+  "subtitle": "Kop Przyszłość AI",
+  "help": {
+    "title": "📊 Komendy:",
+    "mine": "/mine - Rozpocznij mining",
+    "claim": "/claim - Zbierz nagrody",
+    "balance": "/balance - Sprawdź saldo",
+    "status": "/status - Status miningu",
+    "boost": "/boost - Sklep boosterów",
+    "tasks": "/tasks - Zadania AI",
+    "ai": "/ai <tekst> - Czat z AI",
+    "referral": "/referral - System poleceń",
+    "leaderboard": "/leaderboard - Ranking",
+    "clan": "/clan - Klan",
+    "wallet": "/wallet - Portfel",
+    "language": "/language - Zmień język"
+  },
+  "mining": {
+    "started": "⛏️ Mining rozpoczęty!",
+    "speed": "Prędkość",
+    "time": "Czas",
+    "claim_success": "✅ Mining zakończony!",
+    "earned": "Zdobyte",
+    "balance": "Saldo",
+    "cooldown": "⏳ Następny mining za",
+    "already_mining": "Już kopiesz!",
+    "no_active": "❌ Nie masz aktywnego miningu"
+  },
+  "balance": {
+    "title": "💰 Twój Balans:",
+    "total_mined": "Wykopane",
+    "speed": "Prędkość",
+    "rank": "Ranking"
+  },
+  "boost": {
+    "title": "🛒 Sklep Boosterów:",
+    "price": "Cena",
+    "bought": "✅ Kupiono!",
+    "not_enough": "❌ Niewystarczający balans!"
+  },
+  "tasks": {
+    "title": "🤖 Zadania AI:",
+    "daily_limit": "Dzienny limit",
+    "translate": "📝 Tłumaczenie",
+    "summarize": "📋 Podsumowanie",
+    "analyze": "🔍 Analiza",
+    "generate": "✨ Generowanie",
+    "completed": "✅ Zadanie wykonane!",
+    "reward": "Nagroda"
+  },
+  "referral": {
+    "title": "👥 System Poleceń:",
+    "your_code": "Twój kod",
+    "link": "Link polecający",
+    "referred": "Polecone osoby",
+    "bonus": "Zarobione"
+  },
+  "clan": {
+    "title": "🏴 Klan:",
+    "leader": "Lider",
+    "members": "Członkowie",
+    "mined": "Wykopane",
+    "created": "✅ Klan utworzony!",
+    "joined": "🎉 Dołączyłeś!",
+    "left": "👋 Opuściłeś klan"
+  },
+  "leaderboard": {
+    "title": "📊 Ranking:",
+    "mining": "Ranking Miners",
+    "balance": "Ranking Balansów"
+  },
+  "language": {
+    "title": "🌍 Wybierz język:",
+    "selected": "✅ Język zmieniony na:"
+  },
+  "errors": {
+    "token_missing": "❌ Brak tokena Telegram",
+    "invalid_input": "❌ Nieprawidłowe dane",
+    "rate_limit": "❌ Za dużo żądań, poczekaj",
+    "ai_error": "❌ Błąd AI"
+  }
+}

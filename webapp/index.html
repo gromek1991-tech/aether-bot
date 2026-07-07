@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AETHER - Tap Game</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      color: #fff;
+      min-height: 100vh;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+    
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 15px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 10px 0;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, #00d2ff, #3a7bd5, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .level-badge {
+      display: inline-block;
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+      padding: 3px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+    
+    /* Stats Bar */
+    .stats-bar {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 10px 15px;
+      margin: 10px 0;
+      backdrop-filter: blur(10px);
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #00d2ff;
+    }
+    
+    .stat-label {
+      font-size: 0.65rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+    
+    /* Character Container */
+    .character-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    
+    .character {
+      width: 200px;
+      height: 200px;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    
+    .character:active {
+      transform: scale(0.95);
+    }
+    
+    .character canvas {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .tap-effect {
+      position: absolute;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #00d2ff;
+      pointer-events: none;
+      animation: tapFloat 1s ease-out forwards;
+      text-shadow: 0 0 10px rgba(0,210,255,0.8);
+    }
+    
+    @keyframes tapFloat {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-80px) scale(1.5); }
+    }
+    
+    .combo-display {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(90deg, #ef4444, #f59e0b);
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 1rem;
+      display: none;
+      animation: comboPulse 0.5s ease-in-out infinite;
+    }
+    
+    @keyframes comboPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    /* Energy Bar */
+    .energy-section {
+      margin: 15px 0;
+    }
+    
+    .energy-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      margin-bottom: 5px;
+    }
+    
+    .energy-bar {
+      height: 20px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .energy-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #00d2ff);
+      border-radius: 10px;
+      transition: width 0.3s;
+      position: relative;
+    }
+    
+    .energy-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: energyShine 2s infinite;
+    }
+    
+    @keyframes energyShine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    /* Bottom Buttons */
+    .bottom-section {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 15px;
+    }
+    
+    .action-btn {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      border-radius: 12px;
+      padding: 12px 8px;
+      color: #fff;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      backdrop-filter: blur(5px);
+    }
+    
+    .action-btn:active {
+      transform: scale(0.95);
+      background: rgba(255,255,255,0.2);
+    }
+    
+    .action-btn .icon {
+      font-size: 1.5rem;
+      display: block;
+      margin-bottom: 5px;
+    }
+    
+    /* Pet Evolution */
+    .pet-info {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      background: rgba(0,0,0,0.6);
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+    }
+    
+    .pet-name {
+      color: #a855f7;
+      font-weight: bold;
+    }
+    
+    .pet-xp-bar {
+      width: 100px;
+      height: 6px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 3px;
+      margin-top: 3px;
+      overflow: hidden;
+    }
+    
+    .pet-xp-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #a855f7, #ec4899);
+      border-radius: 3px;
+    }
+    
+    /* Particles */
+    .particle {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.5rem;
+      animation: particleFloat 1.5s ease-out forwards;
+    }
+    
+    @keyframes particleFloat {
+      0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+      100% { opacity: 0; transform: translateY(-150px) rotate(360deg); }
+    }
+    
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(16,185,129,0.9);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+      z-index: 1000;
+    }
+    
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    
+    @keyframes toastOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">AETHER</div>
+      <div class="level-badge" id="levelBadge">LVL 1</div>
+    </div>
+    
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat">
+        <div class="stat-value" id="balance">0.00</div>
+        <div class="stat-label">AET</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="taps">0</div>
+        <div class="stat-label">Taps</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="combo">x1</div>
+        <div class="stat-label">Combo</div>
+      </div>
+    </div>
+    
+    <!-- Character -->
+    <div class="character-container">
+      <div class="character" id="character">
+        <canvas id="petCanvas" width="200" height="200"></canvas>
+        <div class="combo-display" id="comboDisplay">x2</div>
+      </div>
+      <div class="pet-info">
+        <div class="pet-name" id="petName">AETHER Bot</div>
+        <div class="pet-xp-bar">
+          <div class="pet-xp-fill" id="petXpFill" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Energy -->
+    <div class="energy-section">
+      <div class="energy-header">
+        <span>⚡ Energy</span>
+        <span id="energyText">100/100</span>
+      </div>
+      <div class="energy-bar">
+        <div class="energy-fill" id="energyFill" style="width: 100%"></div>
+      </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="bottom-section">
+      <button class="action-btn" onclick="claimDaily()">
+        <span class="icon">🎁</span>
+        Daily
+      </button>
+      <button class="action-btn" onclick="openBoost()">
+        <span class="icon">🚀</span>
+        Boost
+      </button>
+      <button class="action-btn" onclick="openShop()">
+        <span class="icon">🛒</span>
+        Shop
+      </button>
+      <button class="action-btn" onclick="openProfile()">
+        <span class="icon">👤</span>
+        Profile
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Game State
+    const state = {
+      balance: 0,
+      taps: 0,
+      combo: 0,
+      lastTapTime: 0,
+      energy: 100,
+      maxEnergy: 100,
+      level: 1,
+      xp: 0,
+      petEvolution: 0,
+      petName: 'AETHER Bot'
+    };
+    
+    // Pet Evolution Stages
+    const petStages = [
+      { name: 'Baby Bot', color: '#60a5fa', xpRequired: 0 },
+      { name: 'Tech Spark', color: '#34d399', xpRequired: 100 },
+      { name: 'Data Fox', color: '#a78bfa', xpRequired: 500 },
+      { name: 'Crypto Dragon', color: '#f472b6', xpRequired: 2000 },
+      { name: 'AI Overlord', color: '#fbbf24', xpRequired: 10000 }
+    ];
+    
+    // Canvas Setup
+    const canvas = document.getElementById('petCanvas');
+    const ctx = canvas.getContext('2d');
+    let animFrame = 0;
+    
+    // Draw Pet
+    function drawPet() {
+      ctx.clearRect(0, 0, 200, 200);
+      
+      const stage = petStages[state.petEvolution];
+      const bounce = Math.sin(animFrame * 0.1) * 5;
+      const pulse = 1 + Math.sin(animFrame * 0.15) * 0.05;
+      
+      ctx.save();
+      ctx.translate(100, 100 + bounce);
+      ctx.scale(pulse, pulse);
+      
+      // Body
+      ctx.beginPath();
+      ctx.fillStyle = stage.color;
+      ctx.arc(0, 0, 60, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Inner glow
+      const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, 60);
+      gradient.addColorStop(0, 'rgba(255,255,255,0.3)');
+      gradient.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      
+      // Eyes
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(-20, -10, 15, 0, Math.PI * 2);
+      ctx.arc(20, -10, 15, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Pupils
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      ctx.arc(-18, -8, 8, 0, Math.PI * 2);
+      ctx.arc(22, -8, 8, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Eye shine
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(-15, -12, 3, 0, Math.PI * 2);
+      ctx.arc(25, -12, 3, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Mouth
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(0, 15, 20, 0.1 * Math.PI, 0.9 * Math.PI);
+      ctx.stroke();
+      
+      // Cheeks
+      ctx.fillStyle = 'rgba(244,114,182,0.5)';
+      ctx.beginPath();
+      ctx.arc(-40, 10, 10, 0, Math.PI * 2);
+      ctx.arc(40, 10, 10, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Evolution particles
+      if (state.petEvolution > 0) {
+        for (let i = 0; i < state.petEvolution * 2; i++) {
+          const angle = (animFrame * 0.02 + i * Math.PI / state.petEvolution) % (Math.PI * 2);
+          const radius = 70 + Math.sin(animFrame * 0.1 + i) * 10;
+          const x = Math.cos(angle) * radius;
+          const y = Math.sin(angle) * radius;
+          
+          ctx.fillStyle = `rgba(168,85,247,${0.5 + Math.sin(animFrame * 0.1 + i) * 0.3})`;
+          ctx.beginPath();
+          ctx.arc(x, y, 4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      
+      ctx.restore();
+      animFrame++;
+      requestAnimationFrame(drawPet);
+    }
+    
+    drawPet();
+    
+    // Tap Handler
+    const character = document.getElementById('character');
+    character.addEventListener('click', handleTap);
+    character.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      handleTap(e);
+    });
+    
+    async function handleTap(e) {
+      const now = Date.now();
+      if (now - state.lastTapTime < 100) return; // Cooldown
+      
+      if (state.energy <= 0) {
+        showToast('⚡ No energy! Wait for regen.');
+        return;
+      }
+      
+      state.lastTapTime = now;
+      state.taps++;
+      state.energy--;
+      
+      // Combo
+      if (now - state.lastTapTime < 5000) {
+        state.combo++;
+      } else {
+        state.combo = 1;
+      }
+      
+      // Reward
+      let reward = 0.1 * Math.min(1 + state.combo * 0.5, 5);
+      state.balance += reward;
+      state.xp += 1;
+      
+      // Sync with backend
+      if (userTelegramId) {
+        const result = await apiRequest('/api/tap', 'POST', {
+          telegramId: userTelegramId,
+          combo: state.combo
+        });
+        if (result && result.success) {
+          state.balance = result.balance;
+          state.energy = result.energy;
+          state.xp = result.xp;
+          state.taps = result.taps;
+          reward = result.reward;
+        }
+      }
+      
+      // Check level up
+      checkLevelUp();
+      
+      // Update UI
+      updateUI();
+      showTapEffect(reward);
+      createParticle(e);
+    }
+    
+    function checkLevelUp() {
+      const xpRequired = state.level * 100;
+      if (state.xp >= xpRequired) {
+        state.xp -= xpRequired;
+        state.level++;
+        showToast(`🎉 Level Up! Level ${state.level}`);
+      }
+      
+      // Check pet evolution
+      const currentStage = petStages[state.petEvolution];
+      const nextStage = petStages[state.petEvolution + 1];
+      if (nextStage && state.xp >= nextStage.xpRequired) {
+        state.petEvolution++;
+        state.petName = petStages[state.petEvolution].name;
+        showToast(`✨ Pet evolved to ${state.petName}!`);
+      }
+    }
+    
+    function updateUI() {
+      document.getElementById('balance').textContent = state.balance.toFixed(2);
+      document.getElementById('taps').textContent = state.taps;
+      document.getElementById('combo').textContent = `x${Math.min(1 + state.combo * 0.5, 5).toFixed(1)}`;
+      document.getElementById('levelBadge').textContent = `LVL ${state.level}`;
+      document.getElementById('petName').textContent = state.petName;
+      
+      // Energy
+      const energyPercent = (state.energy / state.maxEnergy) * 100;
+      document.getElementById('energyFill').style.width = `${energyPercent}%`;
+      document.getElementById('energyText').textContent = `${state.energy}/${state.maxEnergy}`;
+      
+      // XP bar
+      const xpPercent = (state.xp / (state.level * 100)) * 100;
+      document.getElementById('petXpFill').style.width = `${xpPercent}%`;
+      
+      // Combo display
+      const comboDisplay = document.getElementById('comboDisplay');
+      if (state.combo > 1) {
+        comboDisplay.style.display = 'block';
+        comboDisplay.textContent = `x${Math.min(1 + state.combo * 0.5, 5).toFixed(1)}`;
+      } else {
+        comboDisplay.style.display = 'none';
+      }
+    }
+    
+    function showTapEffect(reward) {
+      const effect = document.createElement('div');
+      effect.className = 'tap-effect';
+      effect.textContent = `+${reward.toFixed(3)}`;
+      effect.style.left = `${50 + (Math.random() - 0.5) * 30}%`;
+      effect.style.top = `${40 + (Math.random() - 0.5) * 20}%`;
+      document.querySelector('.character-container').appendChild(effect);
+      setTimeout(() => effect.remove(), 1000);
+    }
+    
+    function createParticle(e) {
+      const particles = ['⚡', '✨', '💎', '🌟', '🔥'];
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.textContent = particles[Math.floor(Math.random() * particles.length)];
+      particle.style.left = `${e.clientX || e.touches[0].clientX}px`;
+      particle.style.top = `${e.clientY || e.touches[0].clientY}px`;
+      document.body.appendChild(particle);
+      setTimeout(() => particle.remove(), 1500);
+    }
+    
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+    
+    // Energy Regen
+    setInterval(() => {
+      if (state.energy < state.maxEnergy) {
+        state.energy = Math.min(state.energy + 1, state.maxEnergy);
+        updateUI();
+      }
+    }, 60000); // 1 per minute
+    
+    // Combo Reset
+    setInterval(() => {
+      if (Date.now() - state.lastTapTime > 5000) {
+        state.combo = 0;
+        updateUI();
+      }
+    }, 1000);
+    
+    // API Configuration
+    const API_BASE = window.location.origin;
+    let userTelegramId = null;
+    
+    // Try to get Telegram user ID from WebApp
+    if (window.Telegram && window.Telegram.WebApp) {
+      const tg = window.Telegram.WebApp;
+      tg.ready();
+      userTelegramId = tg.initDataUnsafe?.user?.id;
+    }
+    
+    // API Functions
+    async function apiRequest(endpoint, method = 'GET', body = null) {
+      try {
+        const options = {
+          method,
+          headers: { 'Content-Type': 'application/json' }
+        };
+        if (body) options.body = JSON.stringify(body);
+        
+        const response = await fetch(`${API_BASE}${endpoint}`, options);
+        return await response.json();
+      } catch (error) {
+        console.error('API error:', error);
+        return null;
+      }
+    }
+    
+    async function loadUserState() {
+      if (!userTelegramId) return;
+      
+      const userData = await apiRequest(`/api/user/${userTelegramId}`);
+      if (userData && !userData.error) {
+        state.balance = userData.balance;
+        state.taps = userData.taps;
+        state.energy = userData.energy;
+        state.level = userData.level;
+        state.xp = userData.xp;
+        state.petEvolution = userData.petEvolution;
+        state.petName = petStages[userData.petEvolution]?.name || 'Baby Bot';
+        updateUI();
+      }
+    }
+    
+    // Action Functions
+    async function claimDaily() {
+      if (userTelegramId) {
+        const result = await apiRequest('/api/daily', 'POST', { telegramId: userTelegramId });
+        if (result && result.success) {
+          showToast(`🎁 Daily bonus! +${result.bonus} AET (Streak: ${result.streak})`);
+          state.balance = result.balance;
+          updateUI();
+          return;
+        }
+      }
+      showToast('🎁 Daily bonus claimed! +10 AET');
+      state.balance += 10;
+      updateUI();
+    }
+    
+    function openBoost() {
+      showToast('🚀 Boost shop coming soon!');
+    }
+    
+    function openShop() {
+      showToast('🛒 Shop coming soon!');
+    }
+    
+    function openProfile() {
+      showToast(`👤 Level ${state.level} | ${state.taps} taps`);
+    }
+    
+    // Init
+    loadUserState();
+    updateUI();
+  </script>
+</body>
+</html>
