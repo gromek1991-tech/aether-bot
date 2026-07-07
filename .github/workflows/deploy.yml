@@ -14,7 +14,12 @@ jobs:
       uses: actions/checkout@v4
     
     - name: Deploy to Railway
-      uses: bervProject/railway-deploy@main
-      with:
-        railway_token: ${{ secrets.RAILWAY_TOKEN }}
-        service: aether-bot
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      run: |
+        # Install Railway CLI
+        npm install -g @railway/cli
+        
+        # Login and deploy
+        railway login --token $RAILWAY_TOKEN
+        railway up --service aether-bot
