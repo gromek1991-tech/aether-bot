@@ -168,6 +168,31 @@ bot.on('callback_query', (query) => {
 });
 
 // ===== MINING CHECKER =====
+// ===== SPACE MINING GAME =====
+bot.onText(/\/space/, (msg) => {
+  bot.sendMessage(msg.chat.id, `🚀 *Space Mining Game*\n\nZbieraj 💎 i unikaj ☄️!\n\nOtwórz grę: http://localhost:3002\n\nLub kliknij przycisk poniżej:`, {
+    parse_mode: "Markdown",
+    reply_markup: {
+      inline_keyboard: [[{ text: "🚀 Graj!", url: "http://localhost:3002" }]]
+    }
+  });
+});
+
+bot.onText(/\/highscore/, (msg) => {
+  const leaders = db.data.users
+    .filter(u => (u.total_taps || 0) > 0)
+    .sort((a, b) => (b.total_taps || 0) - (a.total_taps || 0))
+    .slice(0, 10);
+  
+  let text = "🏆 *Space Mining Highscores:*\n\n";
+  const medals = ["🥇", "🥈", "🥉"];
+  leaders.forEach((u, i) => {
+    text += `${medals[i] || `${i+1}.`} ${u.username || u.first_name}: ${u.total_taps || 0} pts\n`;
+  });
+  
+  if (leaders.length === 0) text += "Brak wyników. Zagraj: /space";
+  bot.sendMessage(msg.chat.id, text, { parse_mode: "Markdown" });
+});
 setInterval(() => {
   const sessions = db.getAllActiveMiningSessions();
   const MINING_INTERVAL_MS = (process.env.MINING_INTERVAL_HOURS || 4) * 60 * 60 * 1000;

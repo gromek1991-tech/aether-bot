@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AETHER Space Mining</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a1a;
+      color: #fff;
+      overflow: hidden;
+      touch-action: manipulation;
+      user-select: none;
+    }
+    canvas { display: block; }
+    #ui {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 10px 15px;
+      display: flex;
+      justify-content: space-between;
+      background: rgba(0,0,0,0.7);
+      z-index: 10;
+    }
+    .stat { text-align: center; }
+    .stat-value { font-size: 1.2rem; font-weight: bold; color: #00d2ff; }
+    .stat-label { font-size: 0.6rem; color: #94a3b8; }
+    #startScreen, #gameOver {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.9);
+      z-index: 20;
+    }
+    #gameOver { display: none; }
+    h1 {
+      font-size: 2rem;
+      background: linear-gradient(90deg, #00d2ff, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .subtitle { color: #94a3b8; margin-bottom: 30px; }
+    .btn {
+      padding: 15px 40px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(90deg, #8B5CF6, #3B82F6);
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .btn:active { transform: scale(0.95); }
+    .instructions { color: #94a3b8; margin-top: 20px; font-size: 0.9rem; }
+    #score {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #00d2ff;
+      margin: 20px 0;
+    }
+    .reward { color: #10b981; font-size: 1.5rem; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div id="ui">
+    <div class="stat">
+      <div class="stat-value" id="scoreDisplay">0</div>
+      <div class="stat-label">SCORE</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="aetDisplay">0.00</div>
+      <div class="stat-label">AET</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="livesDisplay">❤️❤️❤️</div>
+      <div class="stat-label">LIVES</div>
+    </div>
+  </div>
+
+  <canvas id="gameCanvas"></canvas>
+
+  <div id="startScreen">
+    <h1>🚀 SPACE MINING</h1>
+    <p class="subtitle">Mine asteroids, earn AET!</p>
+    <button class="btn" onclick="startGame()">START GAME</button>
+    <p class="instructions">
+      Tap/Click to move spaceship<br>
+      Collect 💎 for AET<br>
+      Avoid ☄️ asteroids!
+    </p>
+  </div>
+
+  <div id="gameOver">
+    <h1>GAME OVER</h1>
+    <div id="score">0</div>
+    <div class="reward" id="rewardText">+0.00 AET</div>
+    <br>
+    <button class="btn" onclick="startGame()">PLAY AGAIN</button>
+  </div>
+
+  <canvas id="gameCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Resize canvas
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Game state
+    let game = {
+      active: false,
+      score: 0,
+      aet: 0,
+      lives: 3,
+      ship: { x: 0, y: 0, targetX: 0, targetY: 0 },
+      asteroids: [],
+      crystals: [],
+      particles: [],
+      stars: [],
+      difficulty: 1,
+      lastSpawn: 0
+    };
+
+    // Initialize stars
+    for (let i = 0; i < 100; i++) {
+      game.stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2,
+        speed: Math.random() * 0.5 + 0.1
+      });
+    }
+
+    // Ship class
+    class Ship {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.targetX = x;
+        this.targetY = y;
+        this.width = 40;
+        this.height = 40;
+        this.trail = [];
+      }
+
+      draw() {
+        // Trail
+        ctx.fillStyle = 'rgba(0, 210, 255, 0.3)';
+        this.trail.forEach((pos, i) => {
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, 3 - i * 0.2, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // Ship body
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        
+        // Glow
+        const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, 30);
+        gradient.addColorStop(0, 'rgba(0, 210, 255, 0.5)');
+        gradient.addColorStop(1, 'rgba(0, 210, 255, 0)');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(0, 0, 30, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Ship shape
+        ctx.fillStyle = '#00d2ff';
+        ctx.beginPath();
+        ctx.moveTo(0, -20);
+        ctx.lineTo(-15, 15);
+        ctx.lineTo(0, 10);
+        ctx.lineTo(15, 15);
+        ctx.closePath();
+        ctx.fill();
+
+        // Cockpit
+        ctx.fillStyle = '#a855f7';
+        ctx.beginPath();
+        ctx.arc(0, -5, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+      }
+
+      update() {
+        // Smooth movement
+        this.x += (this.targetX - this.x) * 0.1;
+        this.y += (this.targetY - this.y) * 0.1;
+
+        // Trail
+        this.trail.unshift({ x: this.x, y: this.y });
+        if (this.trail.length > 10) this.trail.pop();
+
+        // Keep in bounds
+        this.x = Math.max(20, Math.min(canvas.width - 20, this.x));
+        this.y = Math.max(60, Math.min(canvas.height - 20, this.y));
+      }
+    }
+
+    // Asteroid class
+    class Asteroid {
+      constructor(x, y, size) {
+        this.x = x;
+        this.y = y;
+        this.size = size || Math.random() * 20 + 20;
+        this.speed = Math.random() * 2 + 1;
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotationSpeed = (Math.random() - 0.5) * 0.1;
+        this.vertices = [];
+        
+        // Generate random shape
+        for (let i = 0; i < 8; i++) {
+          const angle = (i / 8) * Math.PI * 2;
+          const radius = this.size * (0.7 + Math.random() * 0.3);
+          this.vertices.push({
+            x: Math.cos(angle) * radius,
+            y: Math.sin(angle) * radius
+          });
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+
+        // Glow
+        ctx.shadowColor = '#ef4444';
+        ctx.shadowBlur = 15;
+
+        ctx.fillStyle = '#4a4a4a';
+        ctx.strokeStyle = '#666';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(this.vertices[0].x, this.vertices[0].y);
+        for (let i = 1; i < this.vertices.length; i++) {
+          ctx.lineTo(this.vertices[i].x, this.vertices[i].y);
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.restore();
+      }
+
+      update() {
+        this.y += this.speed;
+        this.rotation += this.rotationSpeed;
+        return this.y < canvas.height + 50;
+      }
+    }
+
+    // Crystal class
+    class Crystal {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = 15;
+        this.speed = Math.random() * 1.5 + 1;
+        this.pulse = 0;
+        this.value = Math.random() < 0.2 ? 0.5 : 0.1; // 20% chance for big crystal
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        
+        const pulse = Math.sin(this.pulse) * 0.2 + 1;
+        ctx.scale(pulse, pulse);
+
+        // Glow
+        ctx.shadowColor = this.value > 0.1 ? '#fbbf24' : '#00d2ff';
+        ctx.shadowBlur = 20;
+
+        // Crystal shape
+        ctx.fillStyle = this.value > 0.1 ? '#fbbf24' : '#00d2ff';
+        ctx.beginPath();
+        ctx.moveTo(0, -this.size);
+        ctx.lineTo(this.size * 0.6, 0);
+        ctx.lineTo(0, this.size);
+        ctx.lineTo(-this.size * 0.6, 0);
+        ctx.closePath();
+        ctx.fill();
+
+        // Shine
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.beginPath();
+        ctx.moveTo(0, -this.size * 0.5);
+        ctx.lineTo(this.size * 0.2, 0);
+        ctx.lineTo(0, this.size * 0.3);
+        ctx.lineTo(-this.size * 0.2, 0);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.restore();
+      }
+
+      update() {
+        this.y += this.speed;
+        this.pulse += 0.1;
+        return this.y < canvas.height + 30;
+      }
+    }
+
+    // Particle class
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.size = Math.random() * 4 + 2;
+        this.speedX = (Math.random() - 0.5) * 5;
+        this.speedY = (Math.random() - 0.5) * 5;
+        this.life = 1;
+      }
+
+      draw() {
+        ctx.globalAlpha = this.life;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.life -= 0.02;
+        return this.life > 0;
+      }
+    }
+
+    // Spawn asteroid
+    function spawnAsteroid() {
+      const x = Math.random() * (canvas.width - 100) + 50;
+      game.asteroids.push(new Asteroid(x, -50));
+    }
+
+    // Spawn crystal
+    function spawnCrystal() {
+      const x = Math.random() * (canvas.width - 100) + 50;
+      game.crystals.push(new Crystal(x, -30));
+    }
+
+    // Create explosion
+    function explode(x, y, color, count = 20) {
+      for (let i = 0; i < count; i++) {
+        game.particles.push(new Particle(x, y, color));
+      }
+    }
+
+    // Check collision
+    function checkCollision(a, b) {
+      const dx = a.x - b.x;
+      const dy = a.y - b.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      return dist < (a.size || 20) + (b.size || 20);
+    }
+
+    // Start game
+    function startGame() {
+      game.active = true;
+      game.score = 0;
+      game.aet = 0;
+      game.lives = 3;
+      game.asteroids = [];
+      game.crystals = [];
+      game.particles = [];
+      game.difficulty = 1;
+      game.lastSpawn = 0;
+      game.ship = new Ship(canvas.width / 2, canvas.height - 100);
+
+      document.getElementById('startScreen').style.display = 'none';
+      document.getElementById('gameOver').style.display = 'none';
+      
+      updateUI();
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Game over
+    function gameOver() {
+      game.active = false;
+      document.getElementById('gameOver').style.display = 'flex';
+      document.getElementById('score').textContent = game.score;
+      document.getElementById('rewardText').textContent = `+${game.aet.toFixed(2)} AET`;
+      
+      // Send score to bot
+      if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.sendData(JSON.stringify({
+          action: 'game_over',
+          score: game.score,
+          aet: game.aet
+        }));
+      }
+    }
+
+    // Update UI
+    function updateUI() {
+      document.getElementById('scoreDisplay').textContent = game.score;
+      document.getElementById('aetDisplay').textContent = game.aet.toFixed(2);
+      document.getElementById('livesDisplay').textContent = '❤️'.repeat(game.lives);
+    }
+
+    // Game loop
+    function gameLoop() {
+      if (!game.active) return;
+
+      // Clear canvas
+      ctx.fillStyle = '#0a0a1a';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw stars
+      game.stars.forEach(star => {
+        star.y += star.speed;
+        if (star.y > canvas.height) star.y = 0;
+        ctx.fillStyle = `rgba(255,255,255,${star.size / 2})`;
+        ctx.fillRect(star.x, star.y, star.size, star.size);
+      });
+
+      // Spawn objects
+      const now = Date.now();
+      if (now - game.lastSpawn > 1000 / game.difficulty) {
+        if (Math.random() < 0.7) spawnAsteroid();
+        if (Math.random() < 0.3) spawnCrystal();
+        game.lastSpawn = now;
+      }
+
+      // Update and draw asteroids
+      game.asteroids = game.asteroids.filter(asteroid => {
+        asteroid.draw();
+        const alive = asteroid.update();
+        
+        if (alive && checkCollision(game.ship, asteroid)) {
+          explode(asteroid.x, asteroid.y, '#ef4444');
+          game.lives--;
+          updateUI();
+          
+          if (game.lives <= 0) {
+            gameOver();
+            return false;
+          }
+        }
+        
+        return alive;
+      });
+
+      // Update and draw crystals
+      game.crystals = game.crystals.filter(crystal => {
+        crystal.draw();
+        const alive = crystal.update();
+        
+        if (alive && checkCollision(game.ship, crystal)) {
+          explode(crystal.x, crystal.y, '#00d2ff', 10);
+          game.aet += crystal.value;
+          game.score += crystal.value > 0.1 ? 50 : 10;
+          updateUI();
+          return false;
+        }
+        
+        return alive;
+      });
+
+      // Update and draw particles
+      game.particles = game.particles.filter(particle => {
+        particle.draw();
+        return particle.update();
+      });
+
+      // Update ship
+      game.ship.update();
+      game.ship.draw();
+
+      // Increase difficulty
+      game.difficulty = 1 + game.score / 500;
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Input handling
+    function handleInput(x, y) {
+      if (!game.active) return;
+      game.ship.targetX = x;
+      game.ship.targetY = y;
+    }
+
+    canvas.addEventListener('click', (e) => {
+      handleInput(e.clientX, e.clientY);
+    });
+
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      handleInput(touch.clientX, touch.clientY);
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (e.buttons === 1) {
+        handleInput(e.clientX, e.clientY);
+      }
+    });
+
+    // Initialize stars
+    for (let i = 0; i < 100; i++) {
+      game.stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2,
+        speed: Math.random() * 0.5 + 0.1
+      });
+    }
+
+    // Draw initial background
+    ctx.fillStyle = '#0a0a1a';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    game.stars.forEach(star => {
+      ctx.fillStyle = `rgba(255,255,255,${star.size / 2})`;
+      ctx.fillRect(star.x, star.y, star.size, star.size);
+    });
+  </script>
+</body>
+</html>
