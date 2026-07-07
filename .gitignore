@@ -2,3 +2,8 @@ node_modules/
 data/
 .env
 *.log
+bot_backup.js
+debug_*.mjs
+simple_*.mjs
+test_*.mjs
+working_bot.mjs

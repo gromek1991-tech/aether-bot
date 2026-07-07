@@ -2,31 +2,45 @@
 
 Mine the Future of AI
 
-## ⚡ Szybki Start
+## ⚡ Quick Start
 
 ```bash
 cd ~/aether-bot
-nano .env              # Wstaw token Telegram
-./start.sh             # Uruchom
+npm install
+node bot.js
 ```
 
-## 🎮 GRY
+## 🎮 Features
 
-### Tap-to-Earn Game
-- `/play` - Rozpocznij grę
-- `/tap` - Klikaj (0.1 AET per tap)
-- `/game` - Status gry
-- `/stopgame` - Zakończ grę
-- `/daily` - Dzienny bonus (10+ AET)
-- `/spin` - Lucky Spin (raz dziennie)
+### Mining System
+- 4-hour mining cycles
+- 1 AET/h base rate
+- Boosters: 2x, 3x, 5x speed
+- Staking: 10-50% APY
 
-### Mini App
-- `/webapp` - Otwórz grę w przeglądarce
-- HTML5 Canvas z animowaną postacią
-- 5 ewolucji pets
-- System combo i energii
+### Games
+- **Tap-to-Earn** - Click to earn AET
+- **Quiz** - 20 questions, earn AET
+- **Lucky Spin** - Daily wheel
+- **Daily Bonus** - 10-24 AET
 
-## 🌍 Języki (5 Languages)
+### AI Integration
+- Chat with AI (Ollama)
+- AI Tasks: translate, summarize, analyze, generate
+- Earn AET for completing tasks
+
+### Social Features
+- **Referral** - 0.1 AET per referral
+- **Clans** - Join or create clans
+- **Leaderboards** - Compete globally
+- **Social Tasks** - Earn by completing tasks
+
+### Marketplace
+- Buy/sell boosters
+- Trade pet skins
+- Exchange badges
+
+## 🌍 Languages
 
 - 🇵🇱 Polski
 - 🇬🇧 English
@@ -34,115 +48,98 @@ nano .env              # Wstaw token Telegram
 - 🇪🇸 Español
 - 🇩🇪 Deutsch
 
-Zmień język: `/language`
-
-## 📋 Komendy Bota
-
-| Komenda | Opis |
-|---------|------|
-| `/start` | Powitanie |
-| `/menu` | Menu z przyciskami |
-| `/profile` | Profil użytkownika |
-| `/mine` | Mining (4h) |
-| `/claim` | Zbierz nagrody |
-| `/balance` | Saldo |
-| `/play` | Gra tap |
-| `/tap` | Klikaj |
-| `/daily` | Bonus dzienny |
-| `/spin` | Lucky Spin |
-| `/boost` | Sklep boosterów |
-| `/stake` | Staking |
-| `/tasks` | Zadania AI |
-| `/ai <tekst>` | Czat AI |
-| `/referral` | Polecaj |
-| `/leaderboard` | Ranking |
-| `/clan` | Klan |
-| `/socialtasks` | Zadania społecznościowe |
-| `/events` | Wydarzenia |
-| `/market` | Rynek |
-| `/notifications` | Powiadomienia |
-| `/achievements` | Osiągnięcia |
-
-## 🎯 Zadania Społecznościowe
-
-Zarabiaj AET za zadania:
-- 📢 Dołącz do kanału (+5 AET)
-- 🐦 Obserwuj Twitter (+10 AET)
-- 📤 Udostępnij post (+3 AET)
-- 👥 Zaproś 5 osób (+25 AET)
-- 🎯 Dziennie wyzwanie (+15 AET)
-
-## 🎉 Wydarzenia
-
-Regularne wydarzenia z bonusami:
-- ⛏️ Podwójny Mining (x2)
-- 👆 Szaleństwo Tapów (x2)
-- 🤖 Wzmocnienie AI (x3)
-- 🎉 Weekendowa Impreza (x1.5)
-
-## 🛒 Rynek
-
-Kupuj i sprzedawaj przedmioty:
-- 🚀 Boostery
-- ✨ Skiny petów
-- 🏆 Odznaki
-
-## 🐾 Ewolucja Petów
-
-| Ewolucja | Wymagane XP |
-|----------|-------------|
-| Baby Bot | 0 |
-| Tech Spark | 100 |
-| Data Fox | 500 |
-| Crypto Dragon | 2000 |
-| AI Overlord | 10000 |
-
-## 📈 Staking
-
-| Plan | Czas | APY | Min. |
-|------|------|-----|------|
-| Podstawowy | 30 dni | 10% | 10 AET |
-| Premium | 90 dni | 25% | 100 AET |
-| Elite | 180 dni | 50% | 500 AET |
-
-## 🌐 Dashboard
-
-`http://localhost:3000`
-
 ## 📊 Tokenomics
 
-| Kategoria | Ilość | Udział |
-|-----------|-------|--------|
+| Category | Amount | Share |
+|----------|--------|-------|
 | Mining Pool | 500M AET | 50% |
-| Team & Dev | 100M AET | 10% |
 | Ecosystem | 200M AET | 20% |
-| Partners | 50M AET | 5% |
+| Team & Dev | 100M AET | 10% |
 | Liquidity | 100M AET | 10% |
+| Partners | 50M AET | 5% |
 | Reserve | 50M AET | 5% |
 
-## 📈 Plan Rozwoju
+## 📈 Pricing
 
-### Q1 2026 ✅
-- Bot Telegram z miningiem
-- Gra tap-to-earn
-- System 5 języków
-- Staking system
-- Zadania społecznościowe
-- Wydarzenia
-- Rynek
+### Mining
+- Base Rate: 1 AET/h
+- Max Offline: 8h
+- Cooldown: 4h
 
-### Q2 2026 🔄
-- DEX listing (STON.fi)
-- Mobile app (React Native)
-- NFT system
-- AI marketplace
+### Boosters
+- Speed 2x: 10 AET (4h)
+- Speed 3x: 25 AET (2h)
+- Speed 5x: 50 AET (1h)
 
-### Q3 2026 📋
-- CEX listing
-- Governance token
-- Cross-chain bridge
-- DAO implementation
+### Staking
+- Basic: 10 AET, 30 days, 10% APY
+- Premium: 100 AET, 90 days, 25% APY
+- Elite: 500 AET, 180 days, 50% APY
 
-## 📝 Licencja
+## 💰 Profitability
+
+### Daily Earnings (Active User)
+- Mining: 12 AET
+- Taps: 10 AET
+- Quiz: 15 AET
+- AI Tasks: 3.5 AET
+- Daily Bonus: 10 AET
+- Lucky Spin: 10 AET
+- **Total: ~60.5 AET/day**
+
+## 🚀 Deployment
+
+### Option 1: Railway (Recommended)
+```bash
+# Push to GitHub
+git init && git add . && git commit -m "Initial"
+gh repo create aether-bot --public --source=. --push
+
+# Deploy on Railway
+# https://railway.app
+```
+
+### Option 2: Local
+```bash
+npm install
+node bot.js
+```
+
+## 📁 Project Structure
+
+```
+aether-bot/
+├── bot.js              # Main bot
+├── dashboard.js        # Web dashboard
+├── ai/                 # AI integration
+├── game/               # Games (tap, quiz, events)
+├── mining/             # Mining system
+├── social/             # Social features
+├── i18n/               # 5 languages
+├── database/           # JSON database
+├── utils/              # Utilities
+├── webapp/             # Telegram Mini App
+└── data/               # Persistent data
+```
+
+## 🔧 Configuration
+
+Create `.env` file:
+```
+TELEGRAM_BOT_TOKEN=your_token_here
+DATABASE_PATH=./data/aether.json
+MINING_RATE=1
+MINING_INTERVAL_HOURS=4
+MAX_OFFLINE_HOURS=8
+```
+
+## 📊 Status
+
+- ✅ Bot: Running
+- ✅ Code: 3,691 lines
+- ✅ GitHub: https://github.com/gromek1991-tech/aether-bot
+- ✅ Ready for deployment
+
+## 📝 License
 
 MIT

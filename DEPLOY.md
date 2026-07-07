@@ -27,7 +27,7 @@ git push -u origin main
 ### Step 3: Set Environment Variables
 In Railway dashboard, go to Variables tab and add:
 ```
-TELEGRAM_BOT_TOKEN=8997846562:AAEaockXk3JtSQTHHCbedJz9c8-UlKzmkfA
+TELEGRAM_BOT_TOKEN=YOUR_TOKEN_HERE
 DATABASE_PATH=/app/data/aether.json
 MINING_RATE=1
 MINING_INTERVAL_HOURS=4
