@@ -20,5 +20,8 @@ jobs:
         # Install Railway CLI
         npm install -g @railway/cli
         
-        # Deploy using token
-        railway up --token $RAILWAY_TOKEN
+        # Login using environment variable
+        export RAILWAY_TOKEN=$RAILWAY_TOKEN
+        
+        # Deploy
+        railway up
