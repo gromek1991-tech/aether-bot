@@ -20,6 +20,5 @@ jobs:
         # Install Railway CLI
         npm install -g @railway/cli
         
-        # Login and deploy
-        railway login --token $RAILWAY_TOKEN
-        railway up --service aether-bot
+        # Deploy using token
+        railway up --token $RAILWAY_TOKEN
